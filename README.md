@@ -29,3 +29,8 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 1. Open terminal
 2. Change to directory containing all 3 files
 3. run `node main.js --help`
+
+#### Heulpful commands
+- View installed npm modules `npm list`
+- View available available exploits for 'jsPDF' library `node main -l jsPDF -L`
+- Example creating a pdf causing the user to redirect to http.tacocat.tk when clicking anywhere on the document `node main -l jsPDF -e redirection -o cute-cat-document -u http.tacocat.tk`
