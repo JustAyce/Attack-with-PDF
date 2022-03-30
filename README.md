@@ -8,7 +8,10 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- main.js   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- jsPDF_template.js   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- PDFkit_template.js  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- exploits  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- *output exploits*  
 |-- node_modules  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- *Your npm packages*  
 |-- package  
 |-- package-lock
 
@@ -49,4 +52,9 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 - View help command/syntax `node main.js -h`
 <br>`usage:  node main.js -l,--lib [jsPDF|PDFkit [-L,--list]] -e,--exploit [-o,--output] [-u,--URI]`
 - View available available exploits for 'jsPDF' library `node main -l jsPDF -L`
+
+# Limitations
+1. Requires access to target machine
+2. Exfiltration of data requires it to be unencrypted
+3. PDF JavaScript function getPageNthWord has a bug of not returning the first word of every new line 
 
