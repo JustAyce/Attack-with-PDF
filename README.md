@@ -3,10 +3,15 @@
 Attack with PDF is an offensive tool created during the 2206 project. The intent of this tool is to generate an offensive PDF that can be uploaded to a target machine to exfiltrate data. The tool is wholly written in javascript and contains the following:
 
 # Direcotry Tree
-|-- README.md  
-|-- main.js  
-|-- PDFKit_template.js  
-|-- jsPDF_template.js  
+|-- Attack-with-PDF  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- README.md   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- main.js   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- jsPDF_template.js   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- PDFkit_template.js  
+|-- node_modules  
+|-- package  
+|-- package-lock
+
 
 
 # Program and Purpose
@@ -16,6 +21,15 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 | PDFKit_template | 1       | - Contains functions to create exploits available to the PDFKit library           |
 | jsPDF_template  | 1       | - Contains functions to create exploits available to the jsPDF library            |
 
+# Exploits
+| Library | Chrome/Acrobat | Name         | Detection         | Description                                                                                       |
+|---------|----------------|--------------|-------------------|---------------------------------------------------------------------------------------------------|
+| jsPDF   | Chrome         | simple_js    | Noisy             | Simple PDF to test if browser is running JS                                                       |
+| jsPDF   | Chrome         | PDFSSRF      | Somewhat Stealthy | Makes the target to make a http post request to given URL upon clicking anywhere in the document  |
+| jsPDF   | Chrome         | Redirection  | Noisy             | Redirects target to visit given URL upon clicking anywhere in the document                        |
+| jsPDF   | Chrome         | Exfiltration | Somewhat Stealthy | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
+| PDFkit  | Acrobat        | Exfiltration | Noisy             | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
+
 # Setup and Usage
 
 ## Prerequsites
@@ -23,7 +37,7 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 - Ensure that the target environment PDF Viewer has JavaScript enabled
 
 ## Install necessary npm modules
-``` npm install argparse pdfkit jspdf@2.1.1 ```
+``` npm install argparse pdfkit jspdf@2.1.1 chalk@2.4.1 ```
 
 ## Running the main script
 1. Open terminal
@@ -32,5 +46,7 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 
 #### Heulpful commands
 - View installed npm modules `npm list`
+- View help command/syntax `node main.js -h`
+<br>`usage:  node main.js -l,--lib [jsPDF|PDFkit [-L,--list]] -e,--exploit [-o,--output] [-u,--URI]`
 - View available available exploits for 'jsPDF' library `node main -l jsPDF -L`
-- Example creating a pdf causing the user to redirect to http.tacocat.tk when clicking anywhere on the document `node main -l jsPDF -e redirection -o cute-cat-document -u http.tacocat.tk`
+
