@@ -25,13 +25,14 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 | jsPDF_template  | 1       | - Contains functions to create exploits available to the jsPDF library            |
 
 # Exploits
-| Library | Chrome/Acrobat | Name         | Detection         | Description                                                                                       |
-|---------|----------------|--------------|-------------------|---------------------------------------------------------------------------------------------------|
-| jsPDF   | Chrome         | simple_js    | Noisy             | Simple PDF to test if browser is running JS                                                       |
-| jsPDF   | Chrome         | PDFSSRF      | Somewhat Stealthy | Makes the target to make a http post request to given URL upon clicking anywhere in the document  |
-| jsPDF   | Chrome         | Redirection  | Noisy             | Redirects target to visit given URL upon clicking anywhere in the document                        |
-| jsPDF   | Chrome         | Exfiltration | Somewhat Stealthy | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
-| PDFkit  | Acrobat        | Exfiltration | Noisy             | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
+| Library | Chrome/Acrobat | Name           | Detection         | Description                                                                                       |
+|---------|----------------|----------------|-------------------|---------------------------------------------------------------------------------------------------|
+| jsPDF   | Chrome         | simple_js      | Noisy             | Simple PDF to test if browser is running JS                                                       |
+| jsPDF   | Chrome         | PDFSSRF        | Somewhat Stealthy | Makes the target to make a http post request to given URL upon clicking anywhere in the document  |
+| jsPDF   | Chrome         | Redirection    | Noisy             | Redirects target to visit given URL upon clicking anywhere in the document                        |
+| jsPDF   | Acrobat        | Simple Autorun | Noisy             | Upon opening the PDF document, an injected JS code will run without further user interaction      |
+| jsPDF   | Chrome         | Exfiltration   | Somewhat Stealthy | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
+| PDFkit  | Acrobat        | Exfiltration   | Noisy             | Makes the target submit a form with all the words in a selected key-pair value to a given server  |
 
 # Setup and Usage
 
