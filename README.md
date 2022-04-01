@@ -40,7 +40,7 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 - Ensure that the target environment PDF Viewer has JavaScript enabled
 
 ## Install necessary npm modules
-``` npm install argparse pdfkit jspdf@2.1.1 chalk@2.4.1 ```
+``` npm install argparse pdfkit jspdf@2.1.1 chalk@2.4.1 tree-kill```
 
 ## Running the main script
 1. Open terminal
