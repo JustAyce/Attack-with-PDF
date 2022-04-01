@@ -2,7 +2,7 @@
 
 Attack with PDF is an offensive tool created during the 2206 project. The intent of this tool is to generate an offensive PDF that can be uploaded to a target machine to exfiltrate data. The tool is wholly written in javascript and contains the following:
 
-# Direcotry Tree
+# Directory Tree
 |-- Attack-with-PDF  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- README.md   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-- main.js   
@@ -47,7 +47,7 @@ Attack with PDF is an offensive tool created during the 2206 project. The intent
 2. Change to directory containing all 3 files
 3. run `node main.js --help`
 
-#### Heulpful commands
+#### Helpful commands
 - View installed npm modules `npm list`
 - View help command/syntax `node main.js -h`
 <br>`usage:  node main.js -l,--lib [jsPDF|PDFkit [-L,--list]] -e,--exploit [-o,--output] [-u,--URI]`
